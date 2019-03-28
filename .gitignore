@@ -2,3 +2,6 @@ dist/
 node_modules/
 target/
 .hc
+.idea/
+smartchainhApp.iml
+
