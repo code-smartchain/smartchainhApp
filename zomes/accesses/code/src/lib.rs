@@ -13,7 +13,7 @@ use hdk::{
     error::ZomeApiResult,
 };
 use hdk::holochain_core_types::{
-    cas::content::Address, entry::Entry, dna::entry_types::Sharing, error::HolochainError, json::JsonString, hash::HashString
+    cas::content::Address, entry::Entry, dna::entry_types::Sharing, error::HolochainError, json::JsonString, hash::HashString,
     validation::EntryValidationData
 };
 
@@ -26,13 +26,13 @@ use hdk::holochain_core_types::{
 // Entities
 #[derive(Serialize, Deserialize, Debug, DefaultJson,Clone)]
 pub struct Access {
-    deviceId: String,
-    deviceType: String,
-    deviceName: String,
-    publicKey: String,
+    device_id: String,
+    device_type: String,
+    device_name: String,
+    public_key: String,
     description: String,
-    transactionHash: HashString,
-    timeRestriction: String
+    transaction_hash: HashString,
+    time_restriction: String
     //// The following Attributes are going to be established via DHT Links and therefore declared here ////
     // owner: HashString,
     // recipient: [HashString],
@@ -42,22 +42,22 @@ pub struct Access {
 
 #[derive(Serialize, Deserialize, Debug, DefaultJson,Clone)]
 pub struct User {
-    telephoneNumber: String
+    telephone_number: String
 }
 
-pub fn handle_create_access(access: Access) -> ZomeApiResult<Address> {
-    let access = Entry::App("access".into(), access.into());
-    let address = hdk::commit_entry(&access)?;
+pub fn handle_create_access(_access: Access) -> ZomeApiResult<Address> {
+    let access_entry = Entry::App("access".into(), _access.into());
+    let address = hdk::commit_entry(&access_entry)?;
     hdk::link_entries(&address, &hdk::AGENT_ADDRESS, "owner")?;
     Ok(address)
 }
 
-pub fn handle_send_access(access_addr: Address, recipient_addr: Address) -> ZomeApiResult<Address> {
+pub fn handle_send_access(access_addr: HashString, recipient_addr: HashString) -> ZomeApiResult<Address> {
     hdk::link_entries(&recipient_addr, &access_addr, "recipient")?;
     Ok(recipient_addr)
 }
 
-pub fn handle_get_my_accesses(address: Address) -> ZomeApiResult<Vec<Access>> {
+pub fn handle_get_my_accesses() -> ZomeApiResult<Vec<Access>> {
     // try and load the list items, filter out errors and collect in a vector
     let list_accesses = hdk::get_links(&hdk::AGENT_ADDRESS, "recipient")?.addresses()
         .iter()
@@ -71,7 +71,7 @@ pub fn handle_get_my_accesses(address: Address) -> ZomeApiResult<Vec<Access>> {
     Ok(list_accesses)
 }
 
-fn definition() -> Vec<ValidatingEntryType> {[
+fn access_definition() -> ValidatingEntryType {
     entry!(
         name: "access",
         description: "the shared Access object which gets linked to all users that have been granted access to it",
@@ -83,7 +83,10 @@ fn definition() -> Vec<ValidatingEntryType> {[
         validation: | _validation_data: hdk::EntryValidationData<Access>| {
             Ok(())
         }
-    ),
+    )
+}
+
+fn user_definition() -> ValidatingEntryType {
     entry!(
         name: "user",
         description: "the absolute minimum of user data needed for the application",
@@ -96,11 +99,12 @@ fn definition() -> Vec<ValidatingEntryType> {[
             Ok(())
         }
     )
-]}
+}
 
 define_zome! {
     entries: [
-       definition()
+       access_definition(),
+       user_definition()
     ]
 
     genesis: || { Ok(()) }
@@ -112,13 +116,13 @@ define_zome! {
             handler: handle_create_access
         }
         send_access: {
-            inputs: |access_addr: Address, recipient_addr: Address|,
+            inputs: |access_addr: HashString, recipient_addr: HashString|,
             outputs: |result: ZomeApiResult<Address>|,
             handler: handle_send_access
         }
         get_my_accesses: {
-            inputs: |address: Address|,
-            outputs: |result: ZomeApiResult<Option<Entry>>|,
+            inputs: | |,
+            outputs: |result: ZomeApiResult<Vec<Access>>|,
             handler: handle_get_my_accesses
         }
     ]
