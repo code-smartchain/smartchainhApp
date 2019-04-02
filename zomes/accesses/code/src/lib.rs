@@ -45,10 +45,16 @@ pub struct User {
     telephone_number: String
 }
 
-pub fn handle_create_access(_access: Access) -> ZomeApiResult<Address> {
-    let access_entry = Entry::App("access".into(), _access.into());
+#[derive(Serialize, Deserialize, Debug, DefaultJson)]
+pub struct YourAccessesList {
+    items: Vec<Access>
+}
+
+pub fn handle_create_access(access: Access) -> ZomeApiResult<Address> {
+    let access_entry = Entry::App("access".into(), access.into());
     let address = hdk::commit_entry(&access_entry)?;
     hdk::link_entries(&address, &hdk::AGENT_ADDRESS, "owner")?;
+    hdk::link_entries(&hdk::AGENT_ADDRESS, &address, "recipient")?;
     Ok(address)
 }
 
@@ -57,7 +63,7 @@ pub fn handle_send_access(access_addr: HashString, recipient_addr: HashString) -
     Ok(recipient_addr)
 }
 
-pub fn handle_get_my_accesses() -> ZomeApiResult<Vec<Access>> {
+pub fn handle_get_my_accesses() -> ZomeApiResult<YourAccessesList> {
     // try and load the list items, filter out errors and collect in a vector
     let list_accesses = hdk::get_links(&hdk::AGENT_ADDRESS, "recipient")?.addresses()
         .iter()
@@ -68,7 +74,9 @@ pub fn handle_get_my_accesses() -> ZomeApiResult<Vec<Access>> {
         .collect::<Vec<Access>>();
 
     // if this was successful then return the list items
-    Ok(list_accesses)
+    Ok(YourAccessesList{
+        items: list_accesses
+    })
 }
 
 fn access_definition() -> ValidatingEntryType {
@@ -82,7 +90,25 @@ fn access_definition() -> ValidatingEntryType {
 
         validation: | _validation_data: hdk::EntryValidationData<Access>| {
             Ok(())
-        }
+        },
+        links: [
+            to!(
+                "%agent_id",
+                tag: "owner",
+                validation_package: || hdk::ValidationPackageDefinition::Entry,
+                validation:  | _validation_data: hdk::LinkValidationData| {
+                    Ok(())
+                }
+            ),
+            from!(
+                "%agent_id",
+                tag: "recipient",
+                validation_package: || hdk::ValidationPackageDefinition::Entry,
+                validation:  | _validation_data: hdk::LinkValidationData| {
+                    Ok(())
+                }
+            )
+        ]
     )
 }
 
@@ -111,7 +137,7 @@ define_zome! {
 
     functions: [
         create_access: {
-            inputs: |entry: Access|,
+            inputs: |access: Access|,
             outputs: |result: ZomeApiResult<Address>|,
             handler: handle_create_access
         }
@@ -122,7 +148,7 @@ define_zome! {
         }
         get_my_accesses: {
             inputs: | |,
-            outputs: |result: ZomeApiResult<Vec<Access>>|,
+            outputs: |result: ZomeApiResult<YourAccessesList>|,
             handler: handle_get_my_accesses
         }
     ]
