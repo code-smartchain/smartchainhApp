@@ -1,0 +1,31 @@
+{
+  "name": "smartchainhapp",
+  "version": "1.0.0",
+  "description": "Project containing the UI and the hApp for the SmartChain Phone Client",
+  "main": "index.js",
+  "scripts": {
+    "h-test": "cd hApp/ && hc test",
+    "h-dev-package": "cd hApp/ && hc package",
+    "h-package": "cd hApp/ && holochain package",
+    "w-build": "cd webApp/ && npm run build",
+    "w-test": "cd webApp/ && npm run test",
+    "w-lint": "cd webApp/ && npm run lint",
+    "start-app": "cd hApp/ && hc run --port 8887",
+    "start-ui": "cd webApp && npm run serve",
+    "dev-install": "npm install && cd webApp/ && npm install && cd ../hApp/test/ && npm install",
+    "dev-start": "concurrently \"npm run start-app\" \"npm run start-ui\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/code-smartchain/hApp.git"
+  },
+  "author": "",
+  "license": "",
+  "bugs": {
+    "url": "https://github.com/code-smartchain/hApp/issues"
+  },
+  "homepage": "https://github.com/code-smartchain/hApp#readme",
+  "dependencies": {
+    "concurrently": "^4.1.0"
+  }
+}

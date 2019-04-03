@@ -2,26 +2,58 @@
 
 Repository contains the UI and the hApp for the SmartChain solution based in Holochain.
 
-## Running the tests
+## hApp
+
+### Running the tests
 
 Install the Holochain Development Kit as mentioned and run all test by calling
 ```bash
-hc test
+npm run h-test
 ```
 
-## Built With
+### Built With
 
 * [Holochain Development Kit](https://github.com/holochain/holochain-rust/releases/tag/v0.0.8-alpha)
 
 when building for development call
 ```bash
-hc package
+npm run h-dev-package
 ```
 when building for release call 
 ```bash
-holochain package
+npm run h-package
 ```
 (needs production conductor to be installed)
+
+## Web Application
+
+### Built With 
+* [VueJs](https://vuejs.org/)
+
+### Project Setup
+```
+npm run dev-install
+```
+
+### Compiles and hot-reloads for development
+```
+npm run dev-start
+```
+
+### Compiles and minifies for production
+```
+npm run w-build
+```
+
+### Run your tests
+```
+npm run w-test
+```
+
+### Lints and fixes files
+```
+npm run w-lint
+```
 
 ## Authors
 
