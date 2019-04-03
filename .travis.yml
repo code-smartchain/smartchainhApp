@@ -10,7 +10,7 @@ before_install:
  - tar -xvf /tmp/cli-v0.0.8-alpha-x86_64-ubuntu-linux-gnu.tar.gz
  - pwd
  - ls -a
- - export PATH=$PATH:$PWD/cli-v0.0.8-alpha-x86_64-ubuntu-linux-gnu/hc
+ - export PATH=$PWD/cli-v0.0.8-alpha-x86_64-ubuntu-linux-gnu/hc:$PATH
 
 install:
  - rustup toolchain install nightly-2019-01-24
