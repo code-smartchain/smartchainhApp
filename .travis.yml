@@ -1,5 +1,9 @@
-language: rust
-rust: nightly
+matrix:
+  include:
+    - language: rust
+      rust: nigthly
+    - language: node_js
+      node_js: 7
 
 os: linux
 
@@ -14,5 +18,5 @@ install:
  - rustup target add wasm32-unknown-unknown --toolchain nightly-2019-01-24
 
 script:
- - cd /hApp
+ - cd /code-smartchain/smartchainhApp/hApp
  - hc test
