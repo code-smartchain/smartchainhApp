@@ -8,7 +8,7 @@ before_install:
  - npm install
  - wget https://github.com/holochain/holochain-rust/releases/download/v0.0.8-alpha/cli-v0.0.8-alpha-x86_64-ubuntu-linux-gnu.tar.gz -O /tmp/cli-v0.0.8-alpha-x86_64-ubuntu-linux-gnu.tar.gz
  - tar -xvf /tmp/cli-v0.0.8-alpha-x86_64-ubuntu-linux-gnu.tar.gz
- - export PATH=PATH:$PWD/hc
+ - export PATH=$PWD/hc:$PATH
 
 install:
  - rustup toolchain install nightly-2019-01-24
