@@ -10,7 +10,7 @@ before_install:
  - tar -xvf /tmp/cli-v0.0.8-alpha-x86_64-ubuntu-linux-gnu.tar.gz
  - pwd
  - ls -a
- - export PATH=$PATH:$PWD/tmp/hc
+ - export PATH=$PATH:$PWD/cli-v0.0.8-alpha-x86_64-ubuntu-linux-gnu/hc
 
 install:
  - rustup toolchain install nightly-2019-01-24
@@ -19,5 +19,4 @@ install:
 
 script:
  - cd hApp/
- - echo $PATH
  - hc test
