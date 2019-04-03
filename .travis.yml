@@ -1,0 +1,24 @@
+language: rust
+rust: nightly
+
+os: linux
+
+matrix:
+  include:
+    - language: node_js
+      node_js: "7"
+
+
+before_install:
+ - "curl -L https://github.com/holochain/holochain-rust/releases/download/v0.0.8-alpha/cli-v0.0.8-alpha-x86_64-ubuntu-linux-gnu.tar.gz"
+ - "tar -zxvf cli-v0.0.8-alpha-x86_64-ubuntu-linux-gnu.tar.gz"
+
+before_script:
+ - "rustup toolchain install nightly-2019-01-24"
+ - "rustup default nightly-2019-01-24"
+ - "rustup target add wasm32-unknown-unknown --toolchain nightly-2019-01-24"
+
+ - "export PATH=$HOME/hc:$PATH"
+
+script:
+ - hc test
