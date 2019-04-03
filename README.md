@@ -1,4 +1,5 @@
-# SmartChain hApp
+# SmartChain hApp 
+[![Build Status](https://travis-ci.org/code-smartchain/smartchainhApp.svg?branch=master)](https://travis-ci.org/code-smartchain/smartchainhApp)
 
 Repository contains the UI and the hApp for the SmartChain solution based in Holochain.
 
