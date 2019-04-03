@@ -19,5 +19,4 @@ install:
 script:
  - cd hApp/
  - hc --version
- - echo $PATH
  - hc test
