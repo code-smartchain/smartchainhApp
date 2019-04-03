@@ -3,14 +3,6 @@ rust: nightly
 
 os: linux
 
-matrix:
-  include:
-    - language: node_js
-      node_js: 7
-    - language: rust
-      rust: nightly-2019-01-24
-
-
 before_install:
  - wget https://github.com/n1k0/casperjs/archive/1.0.2.tar.gz -O /tmp/casper.tar.gz
  - tar -xvf /tmp/casper.tar.gz
