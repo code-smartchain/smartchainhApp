@@ -6,19 +6,19 @@ os: linux
 matrix:
   include:
     - language: node_js
-      node_js: "7"
+      node_js: 7
 
 
 before_install:
- - "curl -L https://github.com/holochain/holochain-rust/releases/download/v0.0.8-alpha/cli-v0.0.8-alpha-x86_64-ubuntu-linux-gnu.tar.gz"
- - "tar -zxf cli-v0.0.8-alpha-x86_64-ubuntu-linux-gnu.tar.gz"
+ - wget https://github.com/holochain/holochain-rust/releases/download/v0.0.8-alpha/cli-v0.0.8-alpha-x86_64-ubuntu-linux-gnu.tar.gz -0 /tmp/cli-v0.0.8-alpha-x86_64-ubuntu-linux-gnu.tar.gz
+ - tar -xvf /tmp/cli-v0.0.8-alpha-x86_64-ubuntu-linux-gnu.tar.gz
+ - export PATH=$HOME/hc:$PATH
 
-before_script:
- - "rustup toolchain install nightly-2019-01-24"
- - "rustup default nightly-2019-01-24"
- - "rustup target add wasm32-unknown-unknown --toolchain nightly-2019-01-24"
-
- - "export PATH=$HOME/hc:$PATH"
+install:
+ - rustup toolchain install nightly-2019-01-24
+ - rustup default nightly-2019-01-24
+ - rustup target add wasm32-unknown-unknown --toolchain nightly-2019-01-24
 
 script:
+ - cd /smartchainhApp/hApp
  - hc test
