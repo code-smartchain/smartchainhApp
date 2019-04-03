@@ -1,28 +1,49 @@
 <template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
-  </div>
+  <v-app>
+    <v-toolbar app>
+      <v-btn
+        flat
+        icon
+        color="white"
+      >
+        <v-icon size=35>menu</v-icon>
+      </v-btn>
+    </v-toolbar>
+
+    <v-content>
+      <OpenLock class="appView"/>
+    </v-content>
+  </v-app>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import OpenLock from './components/OpenLock'
 
 export default {
-  name: 'app',
+  name: 'App',
   components: {
-    HelloWorld
+    OpenLock
+  },
+  data () {
+    return {
+      //
+    }
   }
 }
 </script>
 
 <style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+.appView {
+  width: 100%;
+  height: 100%;
+}
+nav {
+  background-color: rgb(32, 35, 37) !important;
+  border-style: solid;
+  border-width: 0 0 1px 0;
+  border-color: white !important;
+}
+p {
+  color: white;
 }
 </style>
