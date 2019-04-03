@@ -11,7 +11,7 @@ matrix:
 
 before_install:
  - "curl -L https://github.com/holochain/holochain-rust/releases/download/v0.0.8-alpha/cli-v0.0.8-alpha-x86_64-ubuntu-linux-gnu.tar.gz"
- - "tar -zxvf cli-v0.0.8-alpha-x86_64-ubuntu-linux-gnu.tar.gz"
+ - "tar -zxf cli-v0.0.8-alpha-x86_64-ubuntu-linux-gnu.tar.gz"
 
 before_script:
  - "rustup toolchain install nightly-2019-01-24"
