@@ -1,14 +1,14 @@
 language: rust
 rust: nightly
 
-os: linux
+os: osx
 
 before_install:
  - nvm install 8
  - npm install
- - wget https://github.com/holochain/holochain-rust/releases/download/v0.0.8-alpha/cli-v0.0.8-alpha-x86_64-ubuntu-linux-gnu.tar.gz -O /tmp/cli-v0.0.8-alpha-x86_64-ubuntu-linux-gnu.tar.gz
- - tar -xvf /tmp/cli-v0.0.8-alpha-x86_64-ubuntu-linux-gnu.tar.gz
- - mv cli-v0.0.8-alpha-x86_64-unknown-linux-gnu hc
+ - wget https://github.com/holochain/holochain-rust/releases/download/v0.0.8-alpha/cli-v0.0.8-alpha-x86_64-apple-darwin.tar.gz -O /tmp/cli-v0.0.8-alpha-x86_64-apple-darwin.tar.gz
+ - tar -xvf /tmp/cli-v0.0.8-alpha-x86_64-apple-darwin.tar.gz
+ - mv cli-v0.0.8-alpha-x86_64-apple-darwin hc
  - export PATH=$PWD/hc:$PATH
 
 install:
@@ -18,5 +18,6 @@ install:
 
 script:
  - cd hApp/
+ - hc --version
  - echo $PATH
  - hc test
