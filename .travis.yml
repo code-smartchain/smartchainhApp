@@ -10,8 +10,8 @@ matrix:
 
 
 before_install:
- - curl -L https://github.com/holochain/holochain-rust/releases/download/v0.0.8-alpha/cli-v0.0.8-alpha-x86_64-ubuntu-linux-gnu.tar.gz /tmp/cli-v0.0.8-alpha-x86_64-ubuntu-linux-gnu.tar.gz
- - tar -xf /tmp/cli-v0.0.8-alpha-x86_64-ubuntu-linux-gnu.tar.gz
+ - wget https://github.com/n1k0/casperjs/archive/1.0.2.tar.gz -O /tmp/casper.tar.gz
+ - tar -xvf /tmp/casper.tar.gz
  - export PATH=$HOME/hc:$PATH
 
 install:
