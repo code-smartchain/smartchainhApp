@@ -10,7 +10,7 @@ matrix:
 
 
 before_install:
- - wget https://github.com/holochain/holochain-rust/releases/download/v0.0.8-alpha/cli-v0.0.8-alpha-x86_64-ubuntu-linux-gnu.tar.gz -0 /tmp/cli-v0.0.8-alpha-x86_64-ubuntu-linux-gnu.tar.gz
+ - curl -L https://github.com/holochain/holochain-rust/releases/download/v0.0.8-alpha/cli-v0.0.8-alpha-x86_64-ubuntu-linux-gnu.tar.gz /tmp/cli-v0.0.8-alpha-x86_64-ubuntu-linux-gnu.tar.gz
  - tar -xvf /tmp/cli-v0.0.8-alpha-x86_64-ubuntu-linux-gnu.tar.gz
  - export PATH=$HOME/hc:$PATH
 
