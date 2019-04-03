@@ -1,13 +1,11 @@
-matrix:
-  include:
-    - language: rust
-      rust: nigthly
-    - language: node_js
-      node_js: 7
+language: rust
+rust: nightly
 
 os: linux
 
 before_install:
+ - nvm install 7
+ - npm install
  - wget https://github.com/holochain/holochain-rust/releases/download/v0.0.8-alpha/cli-v0.0.8-alpha-x86_64-ubuntu-linux-gnu.tar.gz -O /tmp/cli-v0.0.8-alpha-x86_64-ubuntu-linux-gnu.tar.gz
  - tar -xvf /tmp/cli-v0.0.8-alpha-x86_64-ubuntu-linux-gnu.tar.gz
  - export PATH=$HOME/hc:$PATH
@@ -18,5 +16,5 @@ install:
  - rustup target add wasm32-unknown-unknown --toolchain nightly-2019-01-24
 
 script:
- - cd /code-smartchain/smartchainhApp/hApp
+ - cd /smartchain/smartchainhApp/hApp
  - hc test
