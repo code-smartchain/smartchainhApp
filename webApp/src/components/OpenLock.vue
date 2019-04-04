@@ -6,7 +6,7 @@
       class="appView"
     >
       <v-flex class="openLockButton">
-        <p>Hold your phone next to a lock</p>
+        <p class="info_hold">Hold your phone next to a lock</p>
 
         <v-layout class="circleContainer">
           <v-flex class="circleContainer">
@@ -24,13 +24,7 @@
 <script>
   export default {
     data: () => ({
-      cOne: {
-        style: {
-          opacity: "0"
-        }
-      },
-      cTwo: {},
-      cThree: {},
+
     }),
     methods: {
       animateCircle: function (opacityOne, reverseOne, opacityTwo, reverseTwo, opacityThree, reverseThree) {
@@ -79,30 +73,30 @@
 </script>
 
 <style>
-.openLockButton {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 10vh;
-  margin: auto;
-}
-.circleContainer {
-  height: 20vh;
-  position: relative;
-}
-.circle {
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 0;
-  bottom: 0;
-  margin: auto;
-}
-.footer {
-  position: absolute;
-  bottom: 10px;
-  left: 0;
-  right: 0;
-  text-align: center;
-}
+  .openLockButton {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 10vh;
+    margin: auto;
+  }
+  .circleContainer {
+    height: 20vh;
+    position: relative;
+  }
+  .circle {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+  }
+  .footer {
+    position: absolute;
+    bottom: 10px;
+    left: 0;
+    right: 0;
+    text-align: center;
+  }
 </style>
