@@ -5,10 +5,50 @@
         flat
         icon
         color="white"
+        @click.stop="drawer = !drawer"
       >
         <v-icon size=35>menu</v-icon>
       </v-btn>
     </v-toolbar>
+
+    <v-navigation-drawer
+      v-model="drawer"
+      absolute
+      temporary
+    >
+      <v-list class="pa-1">
+        <v-list-tile avatar>
+          <v-list-tile-avatar>
+            <v-btn
+            flat
+            icon
+            color="black"
+            @click.stop="drawer = !drawer">
+              <v-icon>close</v-icon>
+            </v-btn>
+          </v-list-tile-avatar>
+
+        </v-list-tile>
+      </v-list>
+
+      <v-list class="pt-0" dense>
+        <v-divider></v-divider>
+
+        <v-list-tile
+          v-for="item in items"
+          :key="item.title"
+          @click.stop="drawer = !drawer"
+        >
+          <v-list-tile-action>
+            <v-icon>{{ item.icon }}</v-icon>
+          </v-list-tile-action>
+
+          <v-list-tile-content>
+            <v-list-tile-title>{{ item.title }}</v-list-tile-title>
+          </v-list-tile-content>
+        </v-list-tile>
+      </v-list>
+    </v-navigation-drawer>
 
     <v-content class="appViewContainer">
       <OpenLock class="appView"/>
@@ -26,7 +66,10 @@ export default {
   },
   data () {
     return {
-      //
+      drawer: null,
+      items: [
+        { title: 'Open Doors', icon: 'lock' }
+      ]
     }
   }
 }
