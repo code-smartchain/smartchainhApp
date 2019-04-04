@@ -1,5 +1,5 @@
 <template>
-  <v-container style="background-color:rgb(32, 35, 37);">
+  <v-container>
     <v-layout
       text-xs-center
       wrap
@@ -10,9 +10,9 @@
 
         <v-layout class="circleContainer">
           <v-flex class="circleContainer">
-            <v-icon id="circle1" class="circle" color="white" size=200>far fa-circle</v-icon>
-            <v-icon id="circle2" class="circle" color="white" size=140>far fa-circle</v-icon>
-            <v-icon id="circle3" class="circle" color="white" size=90>far fa-circle</v-icon>
+            <v-icon id="circle1" class="circle" color="white" size=20vh>far fa-circle</v-icon>
+            <v-icon id="circle2" class="circle" color="white" size=14vh>far fa-circle</v-icon>
+            <v-icon id="circle3" class="circle" color="white" size=9vh>far fa-circle</v-icon>
           </v-flex>
         </v-layout>
       </v-flex>
@@ -80,10 +80,14 @@
 
 <style>
 .openLockButton {
-  margin-top: 80%;
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 10vh;
+  margin: auto;
 }
 .circleContainer {
-  height: 80%;
+  height: 20vh;
   position: relative;
 }
 .circle {

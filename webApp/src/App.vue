@@ -10,7 +10,7 @@
       </v-btn>
     </v-toolbar>
 
-    <v-content>
+    <v-content class="appViewContainer">
       <OpenLock class="appView"/>
     </v-content>
   </v-app>
@@ -37,6 +37,9 @@ export default {
   width: 100%;
   height: 100%;
 }
+.appViewContainer {
+  background-color:rgb(32, 35, 37);
+}
 nav {
   background-color: rgb(32, 35, 37) !important;
   border-style: solid;
@@ -45,5 +48,6 @@ nav {
 }
 p {
   color: white;
+  font-size: 2vh;
 }
 </style>
