@@ -63,7 +63,8 @@ export default {
     return {
       drawer: null,
       items: [
-        { title: 'Open Doors', icon: 'lock', route: '/' }
+        { title: 'Open Doors', icon: 'lock', route: '/' },
+        { title: 'Your Accesses', icon: 'lock', route: '/accesses'}
       ]
     }
   },
