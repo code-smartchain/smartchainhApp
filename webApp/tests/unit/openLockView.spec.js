@@ -8,19 +8,19 @@ describe('OpenLock.vue', () => {
   });
 
   it('has a info how to hold the phone', () => {
-    const wrapper = mount(OpenLock);
+    const wrapper = mount(OpenLock, { attachToDocument: true });
     
     expect(wrapper.find('.info_hold').text()).to.equal("Hold your phone next to a lock")
   });
 
   it('has a footer', () => {
-    const wrapper = mount(OpenLock);
+    const wrapper = mount(OpenLock, { attachToDocument: true });
 
     expect(wrapper.find('.footer').exists()).to.equal(true)
   });
 
   it('has 3 circles for animation', () => {
-    const wrapper = mount(OpenLock);
+    const wrapper = mount(OpenLock, { attachToDocument: true });
 
     expect(wrapper.findAll('.circle')).to.have.lengthOf(3);
   });
