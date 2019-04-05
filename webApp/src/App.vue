@@ -40,7 +40,7 @@
           @click.stop="routeTo(item.route)"
         >
           <v-list-tile-action>
-            <v-icon>{{ item.icon }}</v-icon>
+            <v-icon class="menuIcon" v-text="`$vuetify.icons.${item.icon}`"></v-icon>
           </v-list-tile-action>
 
           <v-list-tile-content>
@@ -63,8 +63,8 @@ export default {
     return {
       drawer: null,
       items: [
-        { title: 'Open Doors', icon: 'lock', route: '/' },
-        { title: 'Your Accesses', icon: 'lock', route: '/accesses'}
+        { title: 'Open Doors', icon: 'key', route: '/' },
+        { title: 'Your Accesses', icon: 'keys', route: '/accesses'}
       ]
     }
   },
@@ -94,5 +94,9 @@ nav {
 p {
   color: white;
   font-size: 2vh;
+}
+.menuIcon {
+  margin: 0 auto;
+  height: 80%;
 }
 </style>
