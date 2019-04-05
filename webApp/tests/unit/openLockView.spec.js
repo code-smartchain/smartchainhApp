@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import { mount } from '@vue/test-utils';
-import OpenLock from '@/components/OpenLock.vue';
+import OpenLock from '@/views/OpenLock.vue';
 
 describe('OpenLock.vue', () => {
   it('has a mounted hook', () => {
