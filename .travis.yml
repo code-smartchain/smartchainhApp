@@ -15,8 +15,7 @@ install:
  - rustup toolchain install nightly-2019-01-24
  - rustup default nightly-2019-01-24
  - rustup target add wasm32-unknown-unknown --toolchain nightly-2019-01-24
+ - npm run dev-install
 
 script:
- - cd hApp/
- - hc --version
- - hc test
+ - npm run test

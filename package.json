@@ -13,7 +13,8 @@
     "start-app": "cd hApp/ && hc run --port 8887",
     "start-ui": "cd webApp && npm run serve",
     "dev-install": "npm install && cd webApp/ && npm install && cd ../hApp/test/ && npm install",
-    "dev-start": "concurrently \"npm run start-app\" \"npm run start-ui\""
+    "dev-start": "concurrently \"npm run start-app\" \"npm run start-ui\"",
+    "test": "npm run h-test && npm run w-test"
   },
   "repository": {
     "type": "git",
