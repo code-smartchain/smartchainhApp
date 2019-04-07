@@ -5,7 +5,7 @@
         flat
         icon
         color="white"
-        @click.stop="drawer = !drawer"
+        @click.stop="drawer = true"
       >
         <v-icon size=35>menu</v-icon>
       </v-btn>
@@ -23,7 +23,7 @@
             flat
             icon
             color="black"
-            @click.stop="drawer = !drawer">
+            @click.stop="drawer = false">
               <v-icon>close</v-icon>
             </v-btn>
           </v-list-tile-avatar>
@@ -37,10 +37,10 @@
         <v-list-tile
           v-for="item in items"
           :key="item.title"
-          @click.stop="drawer = !drawer"
+          @click.stop="routeTo(item.route)"
         >
           <v-list-tile-action>
-            <v-icon>{{ item.icon }}</v-icon>
+            <v-icon class="menuIcon" v-text="`$vuetify.icons.${item.icon}`"></v-icon>
           </v-list-tile-action>
 
           <v-list-tile-content>
@@ -51,25 +51,27 @@
     </v-navigation-drawer>
 
     <v-content class="appViewContainer">
-      <OpenLock class="appView"/>
+      <router-view class="appView"></router-view>
     </v-content>
   </v-app>
 </template>
 
 <script>
-import OpenLock from './components/OpenLock'
-
 export default {
   name: 'App',
-  components: {
-    OpenLock
-  },
   data () {
     return {
       drawer: null,
       items: [
-        { title: 'Open Doors', icon: 'lock' }
+        { title: 'Open Doors', icon: 'key', route: '/' },
+        { title: 'Your Accesses', icon: 'keys', route: '/accesses'}
       ]
+    }
+  },
+  methods: {
+    routeTo: function (path) {
+      this.drawer = false
+      this.$router.push(path)
     }
   }
 }
@@ -92,5 +94,9 @@ nav {
 p {
   color: white;
   font-size: 2vh;
+}
+.menuIcon {
+  margin: 0 auto;
+  height: 80%;
 }
 </style>

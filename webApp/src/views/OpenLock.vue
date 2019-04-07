@@ -5,6 +5,11 @@
       wrap
       class="appView"
     >
+      <v-flex>
+        <v-btn @click.stop="createAccess">
+          Create Access
+        </v-btn>
+      </v-flex>
       <v-flex class="openLockButton">
         <p class="info_hold">Hold your phone next to a lock</p>
 
@@ -22,12 +27,17 @@
 </template>
 
 <script>
+import { connect } from "@holochain/hc-web-client";
   export default {
     data: () => ({
-
+      stopAnimating: false
     }),
     methods: {
       animateCircle: function (opacityOne, reverseOne, opacityTwo, reverseTwo, opacityThree, reverseThree) {
+        if(this.stopAnimating == true) {
+          return
+        }
+        
         var speed = 0.01
         
         var cOne = document.getElementById("circle1")
@@ -55,19 +65,54 @@
         setTimeout(() => {this.animateCircle(newOpacityOne,reverseOne,newOpacityTwo,reverseTwo,newOpacityThree,reverseThree)}, 10);
       },
       startAnimating: function() {
-        var cOne = document.getElementById("circle1")
-        var cTwo = document.getElementById("circle2")
-        var cThree = document.getElementById("circle3")
-
-        this.cOne = cOne
-        this.cTwo = cTwo
-        this.cThree = cThree
-
         this.animateCircle(0,false,0.33,false,0.66,false)
+      },
+      createAccess: function() {
+        let wsUrl = this.$root.$data.wsUrl
+        connect(wsUrl).then(({callZome, close}) => {
+          const params = { 
+            access: {
+              device_id: 'test device',
+              device_type: 'test device type',
+              device_name: 'test device name',
+              public_key: 'test public key',
+              description: 'test description',
+              transaction_hash: this.makeid(5),
+              time_restriction: '',
+            }
+          }
+
+          callZome('test-instance', 'accesses', 'create_access')(params)
+            .then(response => {
+              console.log(response)
+              alert('Access has been created')
+            })
+            .catch(error => {
+              console.error(error)
+              alert('Error: Access has not been created')
+            });
+        })
+      },
+      makeid: function (length) {
+        var text = "";
+        var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+        for (var i = 0; i < length; i++)
+          text += possible.charAt(Math.floor(Math.random() * possible.length));
+
+        return text;
       }
     },
     mounted: function () {
       this.startAnimating()
+    },
+    beforeRouteLeave (to, from, next) {
+      // called when the route that renders this component is about to
+      // be navigated away from.
+      // has access to `this` component instance.
+      this.stopAnimating = true
+      console.log("called")
+      next()
     }
   }
 </script>

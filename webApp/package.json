@@ -11,8 +11,10 @@
   },
   "dependencies": {
     "core-js": "^2.6.5",
+    "@holochain/hc-web-client": "^0.1.3",
     "mocha": "^6.0.2",
     "vue": "^2.6.6",
+    "vue-router": "^3.0.1",
     "vuetify": "^1.5.5"
   },
   "devDependencies": {
