@@ -27,7 +27,6 @@
 </template>
 
 <script>
-import { connect } from "@holochain/hc-web-client";
   export default {
     data: () => ({
       stopAnimating: false
@@ -68,8 +67,7 @@ import { connect } from "@holochain/hc-web-client";
         this.animateCircle(0,false,0.33,false,0.66,false)
       },
       createAccess: function() {
-        let wsUrl = this.$root.$data.wsUrl
-        connect(wsUrl).then(({callZome, close}) => {
+        this.$holochain.then(({callZome, close}) => {
           const params = { 
             access: {
               device_id: 'test device',
@@ -111,7 +109,6 @@ import { connect } from "@holochain/hc-web-client";
       // be navigated away from.
       // has access to `this` component instance.
       this.stopAnimating = true
-      console.log("called")
       next()
     }
   }

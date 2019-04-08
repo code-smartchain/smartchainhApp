@@ -3,6 +3,9 @@ import './plugins/vuetify'
 import App from './App.vue'
 import router from './router'
 
+import { connect } from "@holochain/hc-web-client";
+Vue.prototype.$holochain = connect("ws:localhost:8888");
+
 Vue.config.productionTip = false
 
 new Vue({

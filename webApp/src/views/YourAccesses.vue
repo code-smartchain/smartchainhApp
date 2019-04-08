@@ -6,16 +6,13 @@
 </template>
 
 <script>
-import { connect } from "@holochain/hc-web-client";
   export default {
     data: () => ({
       accesses: []
     }),
     methods: {
       getYourAccesses: function() {
-        let wsUrl = this.$root.$data.wsUrl
-        connect(wsUrl)
-          .then(({callZome, close}) => {
+        this.$holochain.then(({callZome, close}) => {
             const params = { }
 
             callZome('test-instance', 'accesses', 'get_my_accesses')(params)
