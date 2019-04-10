@@ -1,6 +1,9 @@
 import { expect } from 'chai';
 import { mount } from '@vue/test-utils';
 import YourAccesses from '@/views/YourAccesses.vue';
+import { connect } from "@holochain/hc-web-client";
+
+const $holochain = connect("ws:localhost:8887");
 
 describe('YourAccesses.vue', () => {
   it('has a mounted hook', () => {
@@ -8,9 +11,7 @@ describe('YourAccesses.vue', () => {
   });
   
   it('displays the shared Accesses', () => {
-    const wrapper = mount(YourAccesses, { attachToDocument: true });
-    
-    console.log(wrapper)
+    const wrapper = mount(YourAccesses, { mocks: { $holochain }, attachToDocument: true });
 
     const access = {
       device_id: 'test device',
@@ -28,7 +29,7 @@ describe('YourAccesses.vue', () => {
   });
 
   it('has a footer', () => {
-    const wrapper = mount(YourAccesses, { attachToDocument: true });
+    const wrapper = mount(YourAccesses, { mocks: { $holochain }, attachToDocument: true });
 
     expect(wrapper.find('.footer').exists()).to.equal(true)
   });
