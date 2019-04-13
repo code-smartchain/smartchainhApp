@@ -23,18 +23,34 @@ const access = {
   }
 }
 
+scenario.runTape('Can create an lock', async (t, { alice }) => {
+  const createResult = await alice.callSync('accesses', 'create_lock', { lock: { id: "TestLock" } })
+  
+  t.notEqual(createResult.Ok, undefined)
+  if (createResult.Err) { console.log(createResult.Err) }
+})
+
 scenario.runTape('Can create an access', async (t, { alice }) => {
   const createResult = await alice.callSync('accesses', 'create_access', access)
   
   t.notEqual(createResult.Ok, undefined)
+  if (createResult.Err) { console.log(createResult.Err) }
 })
 
 scenario.runTape('Can get a list of my accesses', async (t, { alice }) => {
   const createResult = await alice.callSync('accesses', 'create_access', access)
-  
+
   const getResult = await alice.callSync('accesses', 'get_my_accesses', { })
 
   t.equal(getResult.Ok.items.length, 1, 'Alice should have her own Access in the shared Access list')
+  if (getResult.Err) { console.log(getResult.Err) }
+
+  const createResult2 = await alice.callSync('accesses', 'create_access', access)
+  t.equal(createResult2.Err.Internal, "Lock ID exists already. Can't create a duplicate.", 'Alice cant create an access with an a already registered device id')
+  
+  const getResult2 = await alice.callSync('accesses', 'get_my_accesses', { })
+  t.equal(getResult2.Ok.items.length, 1, 'Alice should still have only 1 entry in the shared Access list')
+  if (createResult2.Err) { console.log(createResult.Err) }
 })
 
 scenario.runTape('Can share an access', async (t, { alice, bob }) => {
@@ -42,8 +58,11 @@ scenario.runTape('Can share an access', async (t, { alice, bob }) => {
   const accessAddr = createResult.Ok
 
   const shareResult = await alice.callSync('accesses', 'send_access', { access_addr: accessAddr, recipient_addr: bob.agentId})
+  if (shareResult.Err) { console.log("Share: ",shareResult.Err) }
 
   const getResult = await bob.callSync('accesses', 'get_my_accesses', { })
+  if (getResult.Err) { console.log("Get: ",getResult.Err) }
 
   t.equal(getResult.Ok.items.length, 1, 'Bob should have 1 shared Access in the list')
+  if (createResult.Err) { console.log(createResult.Err) }
 })

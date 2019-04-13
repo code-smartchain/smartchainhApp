@@ -10,7 +10,7 @@ extern crate holochain_core_types_derive;
 
 use hdk::{
     entry_definition::ValidatingEntryType,
-    error::ZomeApiResult,
+    error::ZomeApiResult, error::ZomeApiError
 };
 use hdk::holochain_core_types::{
     cas::content::Address, entry::Entry, dna::entry_types::Sharing, error::HolochainError, json::JsonString, hash::HashString,
@@ -24,14 +24,13 @@ use hdk::holochain_core_types::{
 
 
 // Entities
-#[derive(Serialize, Deserialize, Debug, DefaultJson,Clone)]
+#[derive(Serialize, Deserialize, Debug, DefaultJson, Clone)]
 pub struct Access {
     device_id: String,
     device_type: String,
     device_name: String,
     public_key: String,
     description: String,
-    transaction_hash: HashString,
     time_restriction: String
     //// The following Attributes are going to be established via DHT Links and therefore declared here ////
     // owner: HashString,
@@ -40,21 +39,51 @@ pub struct Access {
     // token: HashString,
 }
 
-#[derive(Serialize, Deserialize, Debug, DefaultJson,Clone)]
+#[derive(Serialize, Deserialize, Debug, DefaultJson, Clone)]
+pub struct Lock {
+    id: String
+}
+
+#[derive(Serialize, Deserialize, Debug, DefaultJson, Clone)]
 pub struct User {
     telephone_number: String
 }
 
+#[derive(Serialize, Deserialize, Debug, DefaultJson, Clone)]
+pub struct PublicAccess {
+    access: Access,
+    lock: Lock
+}
+
 #[derive(Serialize, Deserialize, Debug, DefaultJson)]
 pub struct YourAccessesList {
-    items: Vec<Access>
+    items: Vec<PublicAccess>
+}
+
+pub fn handle_create_lock(lock: Lock) -> ZomeApiResult<Address> {
+    let lock_entry = Entry::App("lock".into(), lock.into());
+    let address = hdk::commit_entry(&lock_entry)?;
+    Ok(address)
 }
 
 pub fn handle_create_access(access: Access) -> ZomeApiResult<Address> {
+    let lock_entry = Entry::App("lock".into(), Lock{ id: access.device_id.clone().into() }.into());
     let access_entry = Entry::App("access".into(), access.into());
+    
+    // See if the Lock Object mentioned in this Access Object has been already setup
+    let interim_lock_adress = hdk::entry_address(&lock_entry)?;
+    let lock = hdk::get_entry(&interim_lock_adress)?;
+
+    if lock.is_some() == true {
+        return Err(ZomeApiError::Internal("Lock ID exists already. Can't create a duplicate.".into()));
+    };
+
+    let lock_address = hdk::commit_entry(&lock_entry)?;
     let address = hdk::commit_entry(&access_entry)?;
+
     hdk::link_entries(&address, &hdk::AGENT_ADDRESS, "owner")?;
     hdk::link_entries(&hdk::AGENT_ADDRESS, &address, "recipient")?;
+    hdk::link_entries(&address, &lock_address, "transaction")?;
     Ok(address)
 }
 
@@ -67,11 +96,17 @@ pub fn handle_get_my_accesses() -> ZomeApiResult<YourAccessesList> {
     // try and load the list items, filter out errors and collect in a vector
     let list_accesses = hdk::get_links(&hdk::AGENT_ADDRESS, "recipient")?.addresses()
         .iter()
-        .map(|item_address| {
-            hdk::utils::get_as_type::<Access>(item_address.to_owned())
+        .map(|item_address| -> ZomeApiResult<PublicAccess>{
+            let access = hdk::utils::get_as_type::<Access>(item_address.to_owned()).unwrap();
+            let lock_address = hdk::get_links(&item_address ,"transaction").unwrap().addresses()[0].clone();
+            let lock = hdk::utils::get_as_type::<Lock>(lock_address.to_owned()).unwrap();
+            return Ok(PublicAccess{
+                access: access,
+                lock: lock
+            });
         })
         .filter_map(Result::ok)
-        .collect::<Vec<Access>>();
+        .collect::<Vec<PublicAccess>>();
 
     // if this was successful then return the list items
     Ok(YourAccessesList{
@@ -95,6 +130,14 @@ fn access_definition() -> ValidatingEntryType {
             to!(
                 "%agent_id",
                 tag: "owner",
+                validation_package: || hdk::ValidationPackageDefinition::Entry,
+                validation:  | _validation_data: hdk::LinkValidationData| {
+                    Ok(())
+                }
+            ),
+            to!(
+                "lock",
+                tag: "transaction",
                 validation_package: || hdk::ValidationPackageDefinition::Entry,
                 validation:  | _validation_data: hdk::LinkValidationData| {
                     Ok(())
@@ -127,10 +170,26 @@ fn user_definition() -> ValidatingEntryType {
     )
 }
 
+fn lock_definition() -> ValidatingEntryType {
+    entry!(
+        name: "lock",
+        description: "the lock object which must be unique accross the whole network",
+        sharing: Sharing::Public,
+        validation_package: || {
+            hdk::ValidationPackageDefinition::Entry
+        },
+
+        validation: | _validation_data: hdk::EntryValidationData<Lock>| {
+            Ok(())
+        }
+    )
+}
+
 define_zome! {
     entries: [
        access_definition(),
-       user_definition()
+       user_definition(),
+       lock_definition()
     ]
 
     genesis: || { Ok(()) }
@@ -151,9 +210,14 @@ define_zome! {
             outputs: |result: ZomeApiResult<YourAccessesList>|,
             handler: handle_get_my_accesses
         }
+        create_lock: {
+            inputs: |lock: Lock|,
+            outputs: |result: ZomeApiResult<Address>|,
+            handler: handle_create_lock
+        }
     ]
 
     traits: {
-        hc_public [create_access,send_access,get_my_accesses]
+        hc_public [create_access,send_access,get_my_accesses,create_lock]
     }
 }
