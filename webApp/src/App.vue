@@ -1,61 +1,59 @@
 <template>
-  <ion-app>
-    <v-app>
-      <v-toolbar app>
-        <v-btn
-          flat
-          icon
-          color="white"
-          @click.stop="drawer = true"
-        >
-          <v-icon size=35>menu</v-icon>
-        </v-btn>
-      </v-toolbar>
-
-      <v-navigation-drawer
-        v-model="drawer"
-        absolute
-        temporary
+  <v-app>
+    <v-toolbar app>
+      <v-btn
+        flat
+        icon
+        color="white"
+        @click.stop="drawer = true"
       >
-        <v-list class="pa-1">
-          <v-list-tile avatar>
-            <v-list-tile-avatar>
-              <v-btn
-              flat
-              icon
-              color="black"
-              @click.stop="drawer = false">
-                <v-icon>close</v-icon>
-              </v-btn>
-            </v-list-tile-avatar>
+        <v-icon size=35>menu</v-icon>
+      </v-btn>
+    </v-toolbar>
 
-          </v-list-tile>
-        </v-list>
+    <v-navigation-drawer
+      v-model="drawer"
+      absolute
+      temporary
+    >
+      <v-list class="pa-1">
+        <v-list-tile avatar>
+          <v-list-tile-avatar>
+            <v-btn
+            flat
+            icon
+            color="black"
+            @click.stop="drawer = false">
+              <v-icon>close</v-icon>
+            </v-btn>
+          </v-list-tile-avatar>
 
-        <v-list class="pt-0" dense>
-          <v-divider></v-divider>
+        </v-list-tile>
+      </v-list>
 
-          <v-list-tile
-            v-for="item in items"
-            :key="item.title"
-            @click.stop="routeTo(item.route)"
-          >
-            <v-list-tile-action>
-              <v-icon class="menuIcon" v-text="`$vuetify.icons.${item.icon}`"></v-icon>
-            </v-list-tile-action>
+      <v-list class="pt-0" dense>
+        <v-divider></v-divider>
 
-            <v-list-tile-content>
-              <v-list-tile-title>{{ item.title }}</v-list-tile-title>
-            </v-list-tile-content>
-          </v-list-tile>
-        </v-list>
-      </v-navigation-drawer>
+        <v-list-tile
+          v-for="item in items"
+          :key="item.title"
+          @click.stop="routeTo(item.route)"
+        >
+          <v-list-tile-action>
+            <v-icon class="menuIcon" v-text="`$vuetify.icons.${item.icon}`"></v-icon>
+          </v-list-tile-action>
 
-      <v-content class="appViewContainer">
-        <router-view class="appView"></router-view>
-      </v-content>
-    </v-app>
-  </ion-app>
+          <v-list-tile-content>
+            <v-list-tile-title>{{ item.title }}</v-list-tile-title>
+          </v-list-tile-content>
+        </v-list-tile>
+      </v-list>
+    </v-navigation-drawer>
+
+    <v-content class="appViewContainer">
+      <router-view class="appView"></router-view>
+    </v-content>
+  </v-app>
 </template>
 
 <script>

@@ -1,6 +1,0 @@
-{
-  "appId": "com.smartchain.app",
-  "appName": "SmartChain",
-  "bundledWebRuntime": false,
-  "webDir": "dist"
-}
