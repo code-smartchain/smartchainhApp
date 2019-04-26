@@ -5,11 +5,6 @@
       wrap
       class="appView"
     >
-      <v-flex>
-        <v-btn @click.stop="createAccess">
-          Create Access
-        </v-btn>
-      </v-flex>
       <v-flex class="openLockButton">
         <p class="info_hold">Hold your phone next to a lock</p>
 
@@ -65,40 +60,6 @@
       },
       startAnimating: function() {
         this.animateCircle(0,false,0.33,false,0.66,false)
-      },
-      createAccess: function() {
-        this.$holochain.then(({callZome, close}) => {
-          const params = { 
-            access: {
-              device_id: 'test device',
-              device_type: 'test device type',
-              device_name: 'test device name',
-              public_key: 'test public key',
-              description: 'test description',
-              transaction_hash: this.makeid(5),
-              time_restriction: '',
-            }
-          }
-
-          callZome('test-instance', 'accesses', 'create_access')(params)
-            .then(response => {
-              console.log(response)
-              alert('Access has been created')
-            })
-            .catch(error => {
-              console.error(error)
-              alert('Error: Access has not been created')
-            });
-        })
-      },
-      makeid: function (length) {
-        var text = "";
-        var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-
-        for (var i = 0; i < length; i++)
-          text += possible.charAt(Math.floor(Math.random() * possible.length));
-
-        return text;
       }
     },
     mounted: function () {
