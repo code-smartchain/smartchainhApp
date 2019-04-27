@@ -1,5 +1,35 @@
 <template>
   <v-container>
+    <v-layout>
+      <v-flex>
+        <v-card>
+          <v-list dark>
+            <v-list-tile
+              v-for="access in accesses"
+              :key="access.access.device_id"
+            >
+              <v-list-tile-avatar>
+                <v-icon>lock</v-icon>
+              </v-list-tile-avatar>
+
+              <v-list-tile-content>
+                <v-list-tile-title v-html="access.access.device_name"></v-list-tile-title>
+              </v-list-tile-content>
+
+              <v-list-tile-action>
+                <v-btn
+                  flat
+                  icon
+                >
+                  <v-icon>share</v-icon>
+                </v-btn>
+              </v-list-tile-action>
+            </v-list-tile>
+          </v-list>
+        </v-card>
+        <p class="footer">Powered by YPTOKEY</p>
+      </v-flex>
+    </v-layout>
     <v-layout text-xs-center>
       <v-flex>
         <v-btn @click.stop="accessDialog = true">
@@ -37,19 +67,15 @@
         </v-card>
       </v-dialog>
     </v-layout>
-    <v-layout>
-      <v-flex>
-        <p class="access" v-for="access in accesses" :key="access.lock.device_id">{{access.access.device_name}}</p>
-        <p class="footer">Powered by YPTOKEY</p>
-      </v-flex>
-    </v-layout>
   </v-container>
 </template>
 
 <script>
+  import DataController from '../DataController'
   export default {
     data: () => ({
       accesses: [],
+      conn: {},
       accessForm: {
         device_id: '',
         device_type: '',
@@ -64,19 +90,17 @@
     }),
     methods: {
       getYourAccesses: function() {
-        this.$holochain.then(({callZome, close}) => {
-            const params = { }
-
-            callZome('test-instance', 'accesses', 'get_my_accesses')(params)
-              .then(response => {
-                console.log(response);
-                let accesses = JSON.parse(response)
+        this.conn.getAccesses()
+          .then((response) => {
+            if (response.Ok != undefined) {
                 this.accesses = []
-                accesses.Ok.items.forEach(access => {
+                console.log(response.Ok.items)
+                response.Ok.items.forEach(access => {
                   this.accesses.push(access)
                 });
-              })
-              .catch(error => console.error(error));
+              } else {
+                alert('Error: '+ JSON.stringify(response.Err))
+              }
           })
           .catch(error => console.error(error));
       },
@@ -84,31 +108,27 @@
         if (!this.$refs.accessForm.validate()) {
           return
         }
-        this.$holochain.then(({callZome, close}) => {
-          const params = { 
-            access: this.accessForm
-          }
+        const params = this.accessForm
 
-          callZome('test-instance', 'accesses', 'create_access')(params)
-            .then(jsonResponse => {
-              console.log(jsonResponse)
-              let response = JSON.parse(jsonResponse)
-              if (response.Ok != undefined) {
-                alert('Access has been created')
-                this.accessDialog = false
-                this.getYourAccesses()
-              } else {
-                alert('Error: '+ JSON.stringify(response.Err))
-              }
-            })
-            .catch(error => {
-              console.error(error)
-              alert('Error: Access has not been created')
-            });
-        })
+        console.log(this.conn)
+        this.conn.createAccess(params)
+          .then((response) => {
+            console.log(response)
+            if (response.Ok != undefined) {
+              this.accessDialog = false
+              this.getYourAccesses()
+            } else {
+              alert('Error: '+ JSON.stringify(response.Err))
+            }
+          })
+          .catch(error => {
+            console.error(error)
+            alert('Error: Access has not been created')
+          });
       }
     },
     mounted: function () {
+      this.conn = new DataController(this.$api, this.$root.$data.agentId)
       this.getYourAccesses()
     }
   }

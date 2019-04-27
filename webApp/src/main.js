@@ -1,17 +1,28 @@
 import Vue from 'vue'
 import './plugins/vuetify'
+import axios from 'axios'
 import App from './App.vue'
 import router from './router'
-
-import { connect } from "@holochain/hc-web-client";
-Vue.prototype.$holochain = connect("ws:localhost:8887");
+import DataController from './DataController'
 
 Vue.config.productionTip = false
 
-new Vue({
+var api = axios.create({ baseURL: "http://localhost:8080/" })
+Vue.prototype.$api = api
+var con = new DataController(api)
+
+var vm = new Vue({
   data:{
-    wsUrl: 'ws:localhost:8887'
+    agentId: ""
   },
   router,
   render: h => h(App)
 }).$mount('#app')
+
+con.registerUser()
+  .then(response => {
+    vm.agentId = response
+  })
+  .catch(error => {
+    vm.agentId = "err"
+  })

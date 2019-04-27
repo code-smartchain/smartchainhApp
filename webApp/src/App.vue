@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <v-toolbar app>
+    <v-toolbar app dark>
       <v-btn
         flat
         icon
@@ -9,6 +9,12 @@
       >
         <v-icon size=35>menu</v-icon>
       </v-btn>
+      <v-spacer></v-spacer>
+    
+      <v-toolbar-title color="white" v-if='$root.$data.agentId == ""'>Registering</v-toolbar-title>
+      <v-toolbar-title color="white" v-else-if='$root.$data.agentId === "err"'>Not connected</v-toolbar-title>
+      <v-toolbar-title color="white" v-else>NetworkID: {{$root.$data.agentId}}</v-toolbar-title>
+    
     </v-toolbar>
 
     <v-navigation-drawer
