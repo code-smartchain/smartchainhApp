@@ -52,6 +52,8 @@ pub struct User {
 #[derive(Serialize, Deserialize, Debug, DefaultJson, Clone)]
 pub struct PublicAccess {
     access: Access,
+    access_addr: Address,
+    owner: bool,
     lock: Lock
 }
 
@@ -98,10 +100,16 @@ pub fn handle_get_my_accesses() -> ZomeApiResult<YourAccessesList> {
         .iter()
         .map(|item_address| -> ZomeApiResult<PublicAccess>{
             let access = hdk::utils::get_as_type::<Access>(item_address.to_owned()).unwrap();
+            
+            let owner = hdk::get_links(&item_address ,"owner").unwrap().addresses()[0].clone();
+            let is_owner = &owner.to_string() == &hdk::AGENT_ADDRESS.to_string();
+
             let lock_address = hdk::get_links(&item_address ,"transaction").unwrap().addresses()[0].clone();
             let lock = hdk::utils::get_as_type::<Lock>(lock_address.to_owned()).unwrap();
             return Ok(PublicAccess{
                 access: access,
+                access_addr: item_address.to_owned(),
+                owner: is_owner,
                 lock: lock
             });
         })
