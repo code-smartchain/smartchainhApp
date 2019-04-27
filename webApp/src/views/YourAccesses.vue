@@ -130,6 +130,7 @@
                 console.log(response.Ok.items)
                 response.Ok.items.forEach(access => {
                   this.accesses.push(access)
+                  this.$root.$data.accesses.push(access.lock.id)
                 });
               } else {
                 alert('Error: '+ JSON.stringify(response.Err))

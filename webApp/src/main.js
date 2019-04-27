@@ -13,7 +13,8 @@ var con = new DataController(api)
 
 var vm = new Vue({
   data:{
-    agentId: ""
+    agentId: "",
+    accesses: []
   },
   router,
   render: h => h(App)

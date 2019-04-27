@@ -9,10 +9,20 @@
         <p class="info_hold">Hold your phone next to a lock</p>
 
         <v-layout class="circleContainer">
-          <v-flex class="circleContainer">
+          <v-flex v-show="connected == false" class="circleContainer">
             <v-icon id="circle1" class="circle" color="white" size=20vh>far fa-circle</v-icon>
             <v-icon id="circle2" class="circle" color="white" size=14vh>far fa-circle</v-icon>
             <v-icon id="circle3" class="circle" color="white" size=9vh>far fa-circle</v-icon>
+          </v-flex>
+          <v-flex v-show="connected == true" class="circleContainer">
+            <v-btn
+              flat
+              icon
+              :ripple=false
+              @click="openLock"
+            >
+              <v-icon color="white" size=20vh>far fa-play-circle</v-icon>
+            </v-btn>
           </v-flex>
         </v-layout>
       </v-flex>
@@ -24,7 +34,10 @@
 <script>
   export default {
     data: () => ({
-      stopAnimating: false
+      stopAnimating: false,
+      stopConnecting: false,
+      connected: false,
+      connection: null
     }),
     methods: {
       animateCircle: function (opacityOne, reverseOne, opacityTwo, reverseTwo, opacityThree, reverseThree) {
@@ -60,10 +73,58 @@
       },
       startAnimating: function() {
         this.animateCircle(0,false,0.33,false,0.66,false)
+      },
+      checkForLocks: async function(index) {
+        if (this.$root.$data.accesses.length > 0 && this.stopConnecting == false) {
+          index ++ 
+          index = index < this.$root.$data.accesses.length ? index : 0
+          var url = this.$root.$data.accesses[index]
+
+          var connection = await this.tryConnect(url).catch(err => {  
+            this.connection = null;
+            this.connected = false;
+          })
+
+          if (connection == undefined) {
+            setTimeout(() => {this.checkForLocks(index)}, 2000);
+          } else {
+            this.connection = connection
+            this.connected = true
+          }
+        }
+      },
+      tryConnect: function (url) {
+        return new Promise((resolve, reject) => {
+          var connection = new WebSocket(url)
+
+          // When the connection is open, send some data to the server
+          connection.onopen = function () {
+            resolve(connection)
+          };
+
+          // Log errors
+          connection.onclose = (error) => {
+            console.log('WebSocket Closed ');
+            if (this.connected == true && this.stopConnecting == false) {
+              this.connected = false
+              this.connction = null
+              this.checkForLocks(-1)
+            }
+            reject(error)
+          };
+        })
+      },
+      openLock: function () {
+        console.log(this.connection)
+        if (this.connection == null) {
+          return
+        }
+        this.connection.send("Open")
       }
     },
     mounted: function () {
       this.startAnimating()
+      this.checkForLocks(-1)
     },
     beforeRouteLeave (to, from, next) {
       // called when the route that renders this component is about to
