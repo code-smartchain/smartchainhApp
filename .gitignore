@@ -27,3 +27,4 @@ yarn-error.log*
 target/
 .hc
 smartchainhApp.iml
+conductor-config2.toml
