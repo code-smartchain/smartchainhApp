@@ -22,7 +22,7 @@
                   flat
                   icon
                 >
-                  <v-icon>share</v-icon>
+                  <v-icon v-if="access.owner" @click.stop="shareForm.access_addr = access.access_addr; shareDialog = true">share</v-icon>
                 </v-btn>
               </v-list-tile-action>
             </v-list-tile>
@@ -68,6 +68,31 @@
         </v-card>
       </v-dialog>
     </v-layout>
+    <v-layout text-xs-center>
+      <v-dialog v-model="shareDialog" persistent max-width="600px">
+        <v-card>
+          <v-card-title>
+            <span class="headline">Share Lock: {{shareForm.access_name}}</span>
+          </v-card-title>
+          <v-card-text>
+            <v-container grid-list-md>
+              <v-form ref="shareForm" v-model="shareFormValid">
+                <v-layout wrap>
+                  <v-flex xs12 sm6 md5>
+                    <v-text-field label="Share with" v-model="shareForm.recipient_agent" :rules="notEmptyRule"></v-text-field>
+                  </v-flex>
+                </v-layout>
+              </v-form>
+            </v-container>
+          </v-card-text>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="blue darken-1" flat @click="shareDialog = false">Close</v-btn>
+            <v-btn color="blue darken-1" flat @click="shareAccess">Save</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+    </v-layout>
   </v-container>
 </template>
 
@@ -85,9 +110,16 @@
         description: '',
         time_restriction: '',
       },
+      shareForm: {
+        recipient_agent: '',
+        access_addr: '',
+        access_name: ''
+      },
       accessDialog: false,
+      shareDialog: false,
       notEmptyRule: [(v) => !!v || 'This field is required'],
-      accessFormValid: false
+      accessFormValid: false,
+      shareFormValid: false
     }),
     methods: {
       getYourAccesses: function() {
@@ -111,13 +143,37 @@
         }
         const params = this.accessForm
 
-        console.log(this.conn)
         this.conn.createAccess(params)
           .then((response) => {
             console.log(response)
             if (response.Ok != undefined) {
               this.accessDialog = false
               this.getYourAccesses()
+            } else {
+              alert('Error: '+ JSON.stringify(response.Err))
+            }
+          })
+          .catch(error => {
+            console.error(error)
+            alert('Error: Access has not been created')
+          });
+      },
+      shareAccess: function() {
+        if (!this.$refs.shareForm.validate()) {
+          return
+        }
+        const params = {
+          recipientAnimal: this.shareForm.recipient_agent,
+          accessAddr: this.shareForm.access_addr  
+        }
+
+        this.conn.shareAccess(params)
+          .then((response) => {
+            console.log(response)
+            if (response.Ok != undefined) {
+              this.shareDialog = false
+              
+              setTimeout(() => {this.getYourAccesses()}, 1000);
             } else {
               alert('Error: '+ JSON.stringify(response.Err))
             }
