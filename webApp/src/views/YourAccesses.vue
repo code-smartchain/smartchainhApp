@@ -5,6 +5,7 @@
         <v-card>
           <v-list dark>
             <v-list-tile
+              class="access"
               v-for="access in accesses"
               :key="access.access.device_id"
             >
