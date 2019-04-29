@@ -149,7 +149,8 @@
             console.log(response)
             if (response.Ok != undefined) {
               this.accessDialog = false
-              this.getYourAccesses()
+              
+              setTimeout(() => {this.getYourAccesses()}, 1000);
             } else {
               alert('Error: '+ JSON.stringify(response.Err))
             }
