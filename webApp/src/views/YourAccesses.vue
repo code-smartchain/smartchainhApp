@@ -22,7 +22,7 @@
                   flat
                   icon
                 >
-                  <v-icon v-if="access.owner" @click.stop="shareForm.access_addr = access.access_addr; shareDialog = true">share</v-icon>
+                  <v-icon v-if="access.owner" @click.stop="shareForm.access_addr = access.access_addr; shareForm.access_name = access.access.device_name; shareDialog = true">share</v-icon>
                 </v-btn>
               </v-list-tile-action>
             </v-list-tile>
@@ -69,25 +69,19 @@
       </v-dialog>
     </v-layout>
     <v-layout text-xs-center>
-      <v-dialog v-model="shareDialog" persistent max-width="600px">
+      <v-dialog v-model="shareDialog" persistent max-width="300px">
         <v-card>
-          <v-card-title>
-            <span class="headline">Share Lock: {{shareForm.access_name}}</span>
+          <v-card-title class="customTitlePadding">
+            <span class="headline">Share Lock: '{{shareForm.access_name}}'</span>
           </v-card-title>
-          <v-card-text>
-            <v-container grid-list-md>
+          <v-card-text class="customPadding">
               <v-form ref="shareForm" v-model="shareFormValid">
-                <v-layout wrap>
-                  <v-flex xs12 sm6 md5>
-                    <v-text-field label="Share with" v-model="shareForm.recipient_agent" :rules="notEmptyRule"></v-text-field>
-                  </v-flex>
-                </v-layout>
+                <v-text-field label="Agent identifier" v-model="shareForm.recipient_agent" :rules="notEmptyRule"></v-text-field>
               </v-form>
-            </v-container>
           </v-card-text>
           <v-card-actions>
-            <v-spacer></v-spacer>
             <v-btn color="blue darken-1" flat @click="shareDialog = false">Close</v-btn>
+            <v-spacer></v-spacer>
             <v-btn color="blue darken-1" flat @click="shareAccess">Save</v-btn>
           </v-card-actions>
         </v-card>
@@ -200,5 +194,11 @@
     left: 0;
     right: 0;
     text-align: center;
+  }
+  .customPadding {
+    padding: 10px 30px;
+  }
+  .customTitlePadding {
+    padding: 20px 30px 0 30px;
   }
 </style>
