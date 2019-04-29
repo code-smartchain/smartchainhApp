@@ -106,7 +106,6 @@
 
           // Log errors
           connection.onclose = (error) => {
-            console.log('WebSocket Closed ');
             if (this.connected == true && this.stopConnecting == false) {
               this.connected = false
               this.connction = null
@@ -117,7 +116,6 @@
         })
       },
       openLock: function () {
-        console.log(this.connection)
         if (this.connection == null) {
           return
         }

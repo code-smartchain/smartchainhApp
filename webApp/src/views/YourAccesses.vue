@@ -121,7 +121,6 @@
           .then((response) => {
             if (response.Ok != undefined) {
                 this.accesses = []
-                console.log(response.Ok.items)
                 response.Ok.items.forEach(access => {
                   this.accesses.push(access)
                   this.$root.$data.accesses.push(access.lock.id)
@@ -140,7 +139,6 @@
 
         this.conn.createAccess(params)
           .then((response) => {
-            console.log(response)
             if (response.Ok != undefined) {
               this.accessDialog = false
               
@@ -150,7 +148,6 @@
             }
           })
           .catch(error => {
-            console.error(error)
             alert('Error: Access has not been created')
           });
       },
@@ -165,7 +162,6 @@
 
         this.conn.shareAccess(params)
           .then((response) => {
-            console.log(response)
             if (response.Ok != undefined) {
               this.shareDialog = false
               
@@ -175,7 +171,6 @@
             }
           })
           .catch(error => {
-            console.error(error)
             alert('Error: Access has not been created')
           });
       }
