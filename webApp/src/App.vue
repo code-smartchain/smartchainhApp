@@ -11,9 +11,17 @@
       </v-btn>
       <v-spacer></v-spacer>
     
-      <v-toolbar-title color="white" v-if='$root.$data.agentId == ""'>Registering</v-toolbar-title>
+      <v-toolbar-title color="white" v-if='$root.$data.agentId == ""' id="registeringString">
+        Registering
+        <v-progress-circular
+          :indeterminate='$root.$data.agentId == ""'
+          color="white"
+          size="21"
+          width="3"
+        ></v-progress-circular>
+      </v-toolbar-title>
       <v-toolbar-title color="white" v-else-if='$root.$data.agentId === "err"'>Not connected</v-toolbar-title>
-      <v-toolbar-title color="white" v-else>NetworkID: {{$root.$data.agentId}}</v-toolbar-title>
+      <v-toolbar-title color="white" v-else>ID: {{$root.$data.agentId}}</v-toolbar-title>
     
     </v-toolbar>
 
