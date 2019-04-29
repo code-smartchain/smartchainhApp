@@ -6,16 +6,16 @@
       class="appView"
     >
       <v-flex class="openLockButton">
-        <p class="info_hold" v-if="connected == true">Hold your phone next to a lock</p>
-        <p class="info_hold" v-if="connected == false">Tap to open lock</p>
+        <p class="info_hold" v-if="connected == false">Hold your phone next to a lock</p>
+        <p class="info_hold" v-if="connected == true">Tap to open lock</p>
 
         <v-layout class="circleContainer">
-          <v-flex v-show="connected == true" class="circleContainer">
+          <v-flex v-show="connected == false" class="circleContainer">
             <v-icon id="circle1" class="circle" color="white" size=20vh>far fa-circle</v-icon>
             <v-icon id="circle2" class="circle" color="white" size=14vh>far fa-circle</v-icon>
             <v-icon id="circle3" class="circle" color="white" size=9vh>far fa-circle</v-icon>
           </v-flex>
-          <v-flex v-show="connected == false" class="circleContainer">
+          <v-flex v-show="connected == true" class="circleContainer">
             <v-btn
               flat
               icon
