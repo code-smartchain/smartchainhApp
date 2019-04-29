@@ -7,7 +7,7 @@
         color="white"
         @click.stop="drawer = true"
       >
-        <v-icon size=35>menu</v-icon>
+        <v-icon size=25>fas fa-bars</v-icon>
       </v-btn>
       <v-spacer></v-spacer>
     
@@ -38,7 +38,7 @@
             icon
             color="black"
             @click.stop="drawer = false">
-              <v-icon>close</v-icon>
+              <v-icon>fas fa-times</v-icon>
             </v-btn>
           </v-list-tile-avatar>
 

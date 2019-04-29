@@ -11,9 +11,9 @@
 
         <v-layout class="circleContainer">
           <v-flex v-show="connected == false" class="circleContainer">
-            <v-icon id="circle1" class="circle" color="white" size=20vh>far fa-circle</v-icon>
-            <v-icon id="circle2" class="circle" color="white" size=14vh>far fa-circle</v-icon>
-            <v-icon id="circle3" class="circle" color="white" size=9vh>far fa-circle</v-icon>
+            <v-icon id="circle1" class="circle" color="white" size=20vh>fas fa-circle</v-icon>
+            <v-icon id="circle2" class="circle" color="white" size=14vh>fas fa-circle</v-icon>
+            <v-icon id="circle3" class="circle" color="white" size=9vh>fas fa-circle</v-icon>
           </v-flex>
           <v-flex v-show="connected == true" class="circleContainer">
             <v-btn
@@ -23,7 +23,7 @@
               @click="openLock"
             >
               <v-icon color="white" size=20vh>fas fa-circle</v-icon>
-              <v-icon color="black" size=15vh style="position: absolute;">lock_open</v-icon>
+              <v-icon color="black" size=10vh style="position: absolute;">fas fa-unlock-alt</v-icon>
             </v-btn>
           </v-flex>
         </v-layout>
@@ -121,7 +121,7 @@
         if (this.connection == null) {
           return
         }
-        this.connection.send("Open")
+        this.connection.send("{ command: 1 }")
       }
     },
     mounted: function () {

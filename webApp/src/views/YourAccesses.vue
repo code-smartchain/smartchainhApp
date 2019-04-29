@@ -10,7 +10,7 @@
               :key="access.access.device_id"
             >
               <v-list-tile-avatar>
-                <v-icon>lock</v-icon>
+                <v-icon>fas fa-lock</v-icon>
               </v-list-tile-avatar>
 
               <v-list-tile-content>
@@ -22,7 +22,7 @@
                   flat
                   icon
                 >
-                  <v-icon v-if="access.owner" @click.stop="shareForm.access_addr = access.access_addr; shareForm.access_name = access.access.device_name; shareDialog = true">share</v-icon>
+                  <v-icon v-if="access.owner" @click.stop="shareForm.access_addr = access.access_addr; shareForm.access_name = access.access.device_name; shareDialog = true">fas fa-share-alt</v-icon>
                 </v-btn>
               </v-list-tile-action>
             </v-list-tile>
