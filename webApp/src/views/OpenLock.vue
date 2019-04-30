@@ -23,7 +23,7 @@
               @click="openLock"
             >
               <v-icon color="white" size=20vh>fas fa-circle</v-icon>
-              <v-icon color="black" size=10vh style="position: absolute;">fas fa-unlock-alt</v-icon>
+              <v-icon color="black" size=10vh style="position: absolute;">{{openLockIcon}}</v-icon>
             </v-btn>
           </v-flex>
         </v-layout>
@@ -39,7 +39,8 @@
       stopAnimating: false,
       stopConnecting: false,
       connected: false,
-      connection: null
+      connection: null,
+      openLockIcon: "fas fa-lock"
     }),
     methods: {
       animateCircle: function (opacityOne, reverseOne, opacityTwo, reverseTwo, opacityThree, reverseThree) {
@@ -104,6 +105,15 @@
             resolve(connection)
           };
 
+          connection.onmessage = (data) => {
+            var responseObj = JSON.parse(data.data)
+            if (responseObj.lockstate == true) {
+              this.openLockIcon = "fas fa-unlock"
+            } else {
+              this.openLockIcon = "fas fa-lock"
+            }
+          }
+
           // Log errors
           connection.onclose = (error) => {
             if (this.connected == true && this.stopConnecting == false) {
@@ -119,7 +129,10 @@
         if (this.connection == null) {
           return
         }
-        this.connection.send("{ command: 1 }")
+        var command = {
+          commandID: 1
+        }
+        this.connection.send(JSON.stringify(command))
       }
     },
     mounted: function () {
