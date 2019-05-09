@@ -10,8 +10,17 @@ describe('OpenLock.vue', () => {
   beforeEach(() => {
     Vue.use(Vuetify);
 
+    const root = {
+      data() {
+        return {
+          accesses: []
+        }
+      }
+    }
+
     wrapper = shallowMount(OpenLock, {
       Vue,
+      parentComponent: root,
       attachToDocument: true
     });
   });
@@ -24,12 +33,21 @@ describe('OpenLock.vue', () => {
     expect(wrapper.find('.info_hold').text()).to.equal("Hold your phone next to a lock")
   });
 
-  it('has a footer', () => {
-    expect(wrapper.find('.footer').exists()).to.equal(true)
-  });
+  it('has a info to open the lock when a lock is close', () => {
+    wrapper.setData({ connected: true })
+    expect(wrapper.find('.info_hold').text()).to.equal("Tap to open lock")
+  })
 
-  it('has 3 circles for animation', () => {
+  it('has a scanning animation', () => {
+    expect(wrapper.find('.scanningAnimation').exists()).to.equal(true)
     expect(wrapper.findAll('.circle')).to.have.lengthOf(3);
   });
 
+  it('has a openLock button when a lock is close', () => {
+    expect(wrapper.find('.openButton').exists()).to.equal(true)
+  })
+
+  it('has a footer', () => {
+    expect(wrapper.find('.footer').exists()).to.equal(true)
+  });
 });

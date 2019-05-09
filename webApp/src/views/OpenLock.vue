@@ -10,12 +10,12 @@
         <p class="info_hold" v-if="connected == true">Tap to open lock</p>
 
         <v-layout class="circleContainer">
-          <v-flex v-show="connected == false" class="circleContainer">
+          <v-flex v-show="connected == false" class="circleContainer scanningAnimation">
             <v-icon id="circle1" class="circle" color="white" size=20vh>fas fa-circle</v-icon>
             <v-icon id="circle2" class="circle" color="white" size=14vh>fas fa-circle</v-icon>
             <v-icon id="circle3" class="circle" color="white" size=9vh>fas fa-circle</v-icon>
           </v-flex>
-          <v-flex v-show="connected == true" class="circleContainer">
+          <v-flex v-show="connected == true" class="circleContainer openButton">
             <v-btn
               flat
               icon
