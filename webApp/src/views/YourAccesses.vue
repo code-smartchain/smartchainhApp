@@ -129,7 +129,7 @@
                 alert('Error: '+ JSON.stringify(response.Err))
               }
           })
-          .catch(error => console.error(error));
+          .catch(error => alert('Error: '+ error));
       },
       createAccess: function() {
         if (!this.$refs.accessForm.validate()) {
@@ -139,7 +139,7 @@
 
         this.conn.createAccess(params)
           .then((response) => {
-            if (response.Ok != undefined) {
+            if (response.Ok != undefined){
               this.accessDialog = false
               
               setTimeout(() => {this.getYourAccesses()}, 1000);
@@ -147,7 +147,7 @@
               alert('Error: '+ JSON.stringify(response.Err))
             }
           })
-          .catch(error => {
+          .catch(() => {
             alert('Error: Access has not been created')
           });
       },
@@ -162,7 +162,7 @@
 
         this.conn.shareAccess(params)
           .then((response) => {
-            if (response.Ok != undefined) {
+            if (response.Ok != undefined){
               this.shareDialog = false
               
               setTimeout(() => {this.getYourAccesses()}, 1000);
@@ -170,7 +170,7 @@
               alert('Error: '+ JSON.stringify(response.Err))
             }
           })
-          .catch(error => {
+          .catch(() => {
             alert('Error: Access has not been created')
           });
       }

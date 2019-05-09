@@ -24,6 +24,6 @@ con.registerUser()
   .then(response => {
     vm.agentId = response
   })
-  .catch(error => {
+  .catch(() => {
     vm.agentId = "err"
   })

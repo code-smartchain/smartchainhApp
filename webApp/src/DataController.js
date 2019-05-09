@@ -29,7 +29,7 @@ export default class DataController {
                     this.agentId = response.data
                     resolve(response.data)
                 })
-                .catch(error => {
+                .catch(() => {
                     this.agentId = "err"
                     reject("err")
                 })

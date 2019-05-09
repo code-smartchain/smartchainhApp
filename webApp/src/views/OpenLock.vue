@@ -83,7 +83,7 @@
           index = index < this.$root.$data.accesses.length ? index : 0
           var url = this.$root.$data.accesses[index]
 
-          var connection = await this.tryConnect(url).catch(err => {  
+          var connection = await this.tryConnect(url).catch(() => {  
             this.connection = null;
             this.connected = false;
           })
