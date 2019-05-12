@@ -19,6 +19,8 @@ yes | gcloud beta container images add-tag eu.gcr.io/${PROJECT_ID}/${IMAGE_NAME}
 kubectl config view
 kubectl config current-context
 
+kubectl apply -f webapp.yml
 kubectl set image deployment/${PROJECT_ID} ${PROJECT_ID}=eu.gcr.io/${PROJECT_ID}/${IMAGE_NAME}:$TRAVIS_COMMIT
+# kubectl run --image=eu.gcr.io/smartchain/webapp:1188d27229b284c0d6452d9fafeceb0daa027c27 webapp --port=80
 
 # sleep 30
