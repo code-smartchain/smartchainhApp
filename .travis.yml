@@ -14,9 +14,14 @@ env:
     - ZONE=europe-west1-b	
     - IMAGE_NAME=webapp
 
+stages:
+  - test
+  - name: deploy
+    if: branch = master
+
 jobs:
   include:
-    - stage: "Tests"                  # naming the Tests stage
+    - stage: test
       name: "Unit Tests"  # names the first Tests stage job
       install:
         - npm install
@@ -25,7 +30,7 @@ jobs:
       - script: 
         - npm run lint
       name: "Linting"       # names the second Tests stage job
-    - stage: "Build and Upload to GCR"
+    - stage: "deploy"
       install:
         - npm install
       script: 
