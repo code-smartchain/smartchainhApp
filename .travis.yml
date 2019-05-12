@@ -2,8 +2,6 @@ language: node_js
 node_js:
   - "8"
 
-os: osx
-
 services:
   - docker
 
@@ -17,7 +15,7 @@ env:
 stages:
   - test
   - name: deploy
-    if: branch = master
+    if: branch = master || branch = restructering
 
 jobs:
   include:
