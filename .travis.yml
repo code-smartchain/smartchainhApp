@@ -4,8 +4,44 @@ node_js:
 
 os: osx
 
-install:
- - npm install
+services:
+  - docker
 
-script:
- - npm run test
+env:
+  global:
+    - PROJECT_ID=smartchain
+    - CLUSTER=standard-cluster-1
+    - ZONE=europe-west1-b	
+    - IMAGE_NAME=webapp
+
+jobs:
+  include:
+    - stage: "Tests"                  # naming the Tests stage
+      name: "Unit Tests"  # names the first Tests stage job
+      install:
+        - npm install
+      script: 
+        - npm run test
+      - script: 
+        - npm run lint
+      name: "Linting"       # names the second Tests stage job
+    - stage: "Build and Upload to GCR"
+      install:
+        - npm install
+      script: 
+        - npm run build
+        - echo 'FROM nginx:1.15.5
+WORKDIR /usr/share/nginx/html
+COPY dist .' > Dockerfile
+      before_deploy:
+        - if [ ! -d "$HOME/google-cloud-sdk/bin" ]; then rm -rf $HOME/google-cloud-sdk; export CLOUDSDK_CORE_DISABLE_PROMPTS=1; curl https://sdk.cloud.google.com | bash; fi
+        - source /home/travis/google-cloud-sdk/path.bash.inc
+        - gcloud --quiet version
+        - gcloud --quiet components update
+        - gcloud --quiet components update kubectl
+      deploy:
+        - provider: script
+          script: chmod +x ./deploy-prod.sh && ./deploy-prod.sh
+          skip_cleanup: true
+          on:
+            branch: master
