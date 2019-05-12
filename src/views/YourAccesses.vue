@@ -176,7 +176,7 @@
       }
     },
     mounted: function () {
-      //this.conn = new DataController(this.$api, this.$root.$data.agentId)
+      this.conn = new DataController(this.$api, this.$root.$data.agentId)
       this.getYourAccesses()
     }
   }
