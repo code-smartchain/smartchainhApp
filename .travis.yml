@@ -15,7 +15,7 @@ env:
 stages:
   - test
   - name: deploy
-    if: branch = master AND branch = restructering
+    if: branch = master || branch = restructering
 
 jobs:
   include:
@@ -46,3 +46,5 @@ jobs:
         - provider: script
           script: chmod +x ./deploy-prod.sh && ./deploy-prod.sh
           skip_cleanup: true
+          on:
+            all_branches: true
