@@ -19,6 +19,6 @@ yes | gcloud beta container images add-tag eu.gcr.io/${PROJECT_ID}/${IMAGE_NAME}
 kubectl config view
 kubectl config current-context
 
-kubectl set image deployment/${KUBE_DEPLOYMENT_NAME} ${KUBE_DEPLOYMENT_CONTAINER_NAME}=eu.gcr.io/${PROJECT_ID}/${IMAGE_NAME}:$TRAVIS_COMMIT
+kubectl set image deployment/${PROJECT_ID} ${PROJECT_ID}=eu.gcr.io/${PROJECT_ID}/${IMAGE_NAME}:$TRAVIS_COMMIT
 
 # sleep 30
