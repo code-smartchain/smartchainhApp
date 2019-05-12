@@ -15,7 +15,7 @@ env:
 stages:
   - test
   - name: deploy
-    if: branch = master || branch = restructering
+    if: branch = master AND branch = restructering
 
 jobs:
   include:
