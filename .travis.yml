@@ -1,21 +1,11 @@
-language: rust
-rust: nightly
+language: node_js
+node_js:
+  - "8"
 
 os: osx
 
-before_install:
- - nvm install 8
- - npm install
- - wget https://github.com/holochain/holochain-rust/releases/download/v0.0.8-alpha/cli-v0.0.8-alpha-x86_64-apple-darwin.tar.gz -O /tmp/cli-v0.0.8-alpha-x86_64-apple-darwin.tar.gz
- - tar -xvf /tmp/cli-v0.0.8-alpha-x86_64-apple-darwin.tar.gz
- - mv cli-v0.0.8-alpha-x86_64-apple-darwin hc
- - export PATH=$PWD/hc:$PATH
-
 install:
- - rustup toolchain install nightly-2019-01-24
- - rustup default nightly-2019-01-24
- - rustup target add wasm32-unknown-unknown --toolchain nightly-2019-01-24
- - npm run dev-install
+ - npm install
 
 script:
  - npm run test
