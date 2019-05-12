@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import { shallowMount } from '@vue/test-utils';
-import YourAccesses from '@/views/YourAccesses.vue';
+import YourAccesses from '../../src/views/YourAccesses.vue';
 import { connect } from "@holochain/hc-web-client";
 import Vuetify from 'vuetify/lib';
 import Vue from "vue";

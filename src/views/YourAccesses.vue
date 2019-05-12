@@ -33,7 +33,7 @@
     </v-layout>
     <v-layout text-xs-center>
       <v-flex>
-        <v-btn @click.stop="accessDialog = true">
+        <v-btn @click.stop="accessDialog = true" class="registerLockButton">
           Register Lock
         </v-btn>
       </v-flex>
@@ -126,7 +126,7 @@
                   this.$root.$data.accesses.push(access.lock.id)
                 });
               } else {
-                alert('Error: '+ JSON.stringify(response.Err))
+                //alert('Error: '+ JSON.stringify(response.Err))
               }
           })
           .catch(error => alert('Error: '+ error));
@@ -176,7 +176,7 @@
       }
     },
     mounted: function () {
-      this.conn = new DataController(this.$api, this.$root.$data.agentId)
+      //this.conn = new DataController(this.$api, this.$root.$data.agentId)
       this.getYourAccesses()
     }
   }
