@@ -11,6 +11,8 @@ env:
     - CLUSTER=standard-cluster-1
     - ZONE=europe-west1-b	
     - IMAGE_NAME=webapp
+  if: branch = staging
+    - IMAGE_NAME=webapp-test
 
 stages:
   - test
@@ -29,9 +31,6 @@ jobs:
         - npm run lint
       name: "Linting"
     - stage: "deploy"
-      if: branch = staging
-        env:
-          - IMAGE_NAME=webapp-test
       install:
         - npm install
       name: "Deploy to Google Cloud Kubernetes"
