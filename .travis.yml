@@ -20,17 +20,18 @@ stages:
 jobs:
   include:
     - stage: "test"
-      name: "Unit Tests"  # names the first Tests stage job
+      name: "Unit Tests"
       install:
         - npm install
       script: 
         - npm run test
     - script: 
         - npm run lint
-      name: "Linting"       # names the second Tests stage job
+      name: "Linting"
     - stage: "deploy"
       install:
         - npm install
+      name: "Deploy to Google Cloud Kubernetes"
       script: 
         - npm run build
       before_deploy:

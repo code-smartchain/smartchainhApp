@@ -2,6 +2,9 @@
 
 set -e
 
+mv Dockerfile ../Dockerfile
+cd ..
+
 docker build -t eu.gcr.io/${PROJECT_ID}/${IMAGE_NAME}:$TRAVIS_COMMIT .
 
 echo $GOOGLE_APPLICATION_CREDENTIALS | base64 --decode -i > ${HOME}/gcloud-service-key.json
