@@ -42,7 +42,7 @@ jobs:
         - gcloud --quiet components update kubectl
       deploy:
         - provider: script
-          script: chmod +x ./ci-config/deploy-prod.sh && ./ci-config/deploy-prod.sh
+          script: chmod +x ./deploy-prod.sh && ./deploy-prod.sh
           skip_cleanup: true
           on:
             all_branches: true

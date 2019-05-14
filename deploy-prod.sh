@@ -2,7 +2,10 @@
 
 set -e
 
-cd ..
+echo "FROM nginx:1.15.5
+WORKDIR /usr/share/nginx/html
+COPY dist ." > Dockerfile
+
 
 docker build -t eu.gcr.io/${PROJECT_ID}/${IMAGE_NAME}:$TRAVIS_COMMIT .
 
