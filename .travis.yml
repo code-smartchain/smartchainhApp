@@ -11,8 +11,11 @@ env:
     - CLUSTER=standard-cluster-1
     - ZONE=europe-west1-b	
     - IMAGE_NAME=webapp
-  if: branch = staging
-    - IMAGE_NAME=webapp-test
+
+matrix:
+  include:
+      if: branch = staging
+      env: IMAGE_NAME=webapp-test
 
 stages:
   - test
