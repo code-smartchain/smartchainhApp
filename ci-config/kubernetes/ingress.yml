@@ -6,9 +6,17 @@ metadata:
     kubernetes.io/ingress.class: "nginx"
 spec:
   rules:
-  - http:
+  - host: smartchain.timonchristiansen.com
+    http:
       paths:
       - path: /
         backend:
           serviceName: webapp
+          servicePort: 80
+  - host: test.timonchristiansen.com
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: webapp-test
           servicePort: 80

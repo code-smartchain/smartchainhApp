@@ -15,7 +15,7 @@ env:
 stages:
   - test
   - name: deploy
-    if: branch = master || branch = restructering
+    if: branch = master || branch = staging
 
 jobs:
   include:
@@ -29,6 +29,9 @@ jobs:
         - npm run lint
       name: "Linting"
     - stage: "deploy"
+      if: branch = staging
+        env:
+          - IMAGE_NAME=webapp-test
       install:
         - npm install
       name: "Deploy to Google Cloud Kubernetes"
