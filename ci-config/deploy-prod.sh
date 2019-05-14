@@ -2,7 +2,7 @@
 
 set -e
 
-mv Dockerfile ../Dockerfile
+mv "Dockerfile" "../Dockerfile"
 cd ..
 
 docker build -t eu.gcr.io/${PROJECT_ID}/${IMAGE_NAME}:$TRAVIS_COMMIT .
