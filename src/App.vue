@@ -10,6 +10,11 @@
       >
         <v-icon size=25>fas fa-bars</v-icon>
       </v-btn>
+
+      <v-spacer></v-spacer>
+      <v-toolbar-title>
+        TEST
+      </v-toolbar-title>
       <v-spacer></v-spacer>
     
       <v-toolbar-title color="white" v-if='$root.$data.agentId == ""' id="registeringString">
