@@ -1,32 +1,64 @@
 {
-  "name": "smartchainhapp",
-  "version": "1.0.0",
-  "description": "Project containing the UI and the hApp for the SmartChain Phone Client",
-  "main": "index.js",
+  "name": "smartchain-web-app",
+  "version": "0.1.0",
+  "private": true,
   "scripts": {
-    "h-test": "cd hApp/ && hc test",
-    "h-dev-package": "cd hApp/ && hc package",
-    "h-package": "cd hApp/ && holochain package",
-    "w-build": "cd webApp/ && npm run build",
-    "w-test": "cd webApp/ && npm run test",
-    "w-lint": "cd webApp/ && npm run lint",
-    "start-app": "cd hApp/ && hc run --port 8887",
-    "start-ui": "cd webApp && npm run serve",
-    "dev-install": "npm install && cd webApp/ && npm install && cd ../hApp/test/ && npm install",
-    "dev-start": "concurrently \"npm run start-app\" \"npm run start-ui\"",
-    "test": "npm run h-test && npm run w-test"
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build",
+    "lint": "vue-cli-service lint",
+    "test:unit": "vue-cli-service test:unit --reporter=nyan",
+    "test": "npm run test:unit"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/code-smartchain/hApp.git"
-  },
-  "author": "",
-  "license": "",
-  "bugs": {
-    "url": "https://github.com/code-smartchain/hApp/issues"
-  },
-  "homepage": "https://github.com/code-smartchain/hApp#readme",
   "dependencies": {
-    "concurrently": "^4.1.0"
-  }
+    "@holochain/hc-web-client": "^0.1.3",
+    "axios": "^0.18.0",
+    "chimpy": "^0.54.0",
+    "concurrently": "^4.1.0",
+    "core-js": "^2.6.5",
+    "mocha": "^6.0.2",
+    "sinon": "^7.3.2",
+    "vue": "^2.6.6",
+    "vue-router": "^3.0.1",
+    "vuetify": "^1.5.5"
+  },
+  "devDependencies": {
+    "@vue/cli-plugin-babel": "^3.5.0",
+    "@vue/cli-plugin-eslint": "^3.5.0",
+    "@vue/cli-plugin-unit-mocha": "^3.5.0",
+    "@vue/cli-service": "^3.5.0",
+    "@vue/test-utils": "1.0.0-beta.29",
+    "babel-eslint": "^10.0.1",
+    "chai": "^4.1.2",
+    "eslint": "^5.8.0",
+    "eslint-plugin-vue": "^5.0.0",
+    "stylus": "^0.54.5",
+    "stylus-loader": "^3.0.1",
+    "vue-cli-plugin-vuetify": "^0.5.0",
+    "vue-template-compiler": "^2.5.21",
+    "vuetify-loader": "^1.0.5"
+  },
+  "eslintConfig": {
+    "root": true,
+    "env": {
+      "node": true
+    },
+    "extends": [
+      "plugin:vue/essential",
+      "eslint:recommended"
+    ],
+    "rules": {},
+    "parserOptions": {
+      "parser": "babel-eslint"
+    }
+  },
+  "postcss": {
+    "plugins": {
+      "autoprefixer": {}
+    }
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not ie <= 8"
+  ]
 }

@@ -5,6 +5,7 @@
         flat
         icon
         color="white"
+        class="openNavigation"
         @click.stop="drawer = true"
       >
         <v-icon size=25>fas fa-bars</v-icon>
@@ -52,6 +53,7 @@
           v-for="item in items"
           :key="item.title"
           @click.stop="routeTo(item.route)"
+          v-bind:class="item.class"
         >
           <v-list-tile-action>
             <v-icon class="menuIcon" v-text="`$vuetify.icons.${item.icon}`"></v-icon>
@@ -77,8 +79,8 @@ export default {
     return {
       drawer: null,
       items: [
-        { title: 'Open Doors', icon: 'key', route: '/' },
-        { title: 'Your Accesses', icon: 'keys', route: '/accesses'}
+        { title: 'Open Doors', icon: 'key', route: '/', class: 'openDoors' },
+        { title: 'Your Accesses', icon: 'keys', route: '/accesses', class: 'yourAccesses'}
       ]
     }
   },

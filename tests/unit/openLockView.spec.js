@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import { shallowMount } from '@vue/test-utils';
-import OpenLock from '@/views/OpenLock.vue';
+import OpenLock from '../../src/views/OpenLock.vue';
 import Vuetify from 'vuetify/lib';
 import Vue from "vue";
 

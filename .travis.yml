@@ -1,21 +1,49 @@
-language: rust
-rust: nightly
+language: node_js
+node_js:
+  - "8"
 
-os: osx
+services:
+  - docker
 
-before_install:
- - nvm install 8
- - npm install
- - wget https://github.com/holochain/holochain-rust/releases/download/v0.0.8-alpha/cli-v0.0.8-alpha-x86_64-apple-darwin.tar.gz -O /tmp/cli-v0.0.8-alpha-x86_64-apple-darwin.tar.gz
- - tar -xvf /tmp/cli-v0.0.8-alpha-x86_64-apple-darwin.tar.gz
- - mv cli-v0.0.8-alpha-x86_64-apple-darwin hc
- - export PATH=$PWD/hc:$PATH
+env:
+  global:
+    - PROJECT_ID=smartchain
+    - CLUSTER=standard-cluster-1
+    - ZONE=europe-west1-b	
+    - IMAGE_NAME=webapp
 
-install:
- - rustup toolchain install nightly-2019-01-24
- - rustup default nightly-2019-01-24
- - rustup target add wasm32-unknown-unknown --toolchain nightly-2019-01-24
- - npm run dev-install
+stages:
+  - test
+  - name: deploy
+    if: branch = master || branch = staging
 
-script:
- - npm run test
+jobs:
+  include:
+    - stage: "test"
+      name: "Unit Tests"
+      install:
+        - npm install
+      script: 
+        - npm run test
+    - script: 
+        - npm run lint
+      name: "Linting"
+    - stage: "deploy"
+      install:
+        - npm install
+      name: "Deploy to Google Cloud Kubernetes"
+      script: 
+        - if [ $TRAVIS_BRANCH = "staging" ]; then export IMAGE_NAME=webapp-test; fi
+        - npm run build
+      before_deploy:
+        - if [ ! -d "$HOME/google-cloud-sdk/bin" ]; then rm -rf $HOME/google-cloud-sdk; export CLOUDSDK_CORE_DISABLE_PROMPTS=1; curl https://sdk.cloud.google.com | bash >/dev/null; fi
+        - source /home/travis/google-cloud-sdk/path.bash.inc
+        - gcloud --quiet version
+        - gcloud --quiet components update
+        - gcloud --quiet components update kubectl
+      deploy:
+        - provider: script
+          script: chmod +x ./deploy-prod.sh && ./deploy-prod.sh
+          skip_cleanup: true
+          on:
+            all_branches: true
