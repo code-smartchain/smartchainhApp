@@ -14,8 +14,6 @@ env:
 
 stages:
   - test
-  - name: setEnvForStaging
-    if: branch = staging
   - name: deploy
     if: branch = master || branch = staging
 
@@ -30,15 +28,12 @@ jobs:
     - script: 
         - npm run lint
       name: "Linting"
-    - stage: "setEnvForStaging"
-      env:
-        global:
-          - IMAGE_NAME=webapp-test
     - stage: "deploy"
       install:
         - npm install
       name: "Deploy to Google Cloud Kubernetes"
       script: 
+        - if [[$TRAVIS_BRANCH == "staging"]]; then export IMAGE_NAME=webapp-test; fi
         - npm run build
       before_deploy:
         - if [ ! -d "$HOME/google-cloud-sdk/bin" ]; then rm -rf $HOME/google-cloud-sdk; export CLOUDSDK_CORE_DISABLE_PROMPTS=1; curl https://sdk.cloud.google.com | bash >/dev/null; fi
