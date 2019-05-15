@@ -7,7 +7,7 @@ import DataController from './DataController'
 
 Vue.config.productionTip = false
 
-var api = axios.create({ baseURL: "http://localhost:8080/" })
+var api = axios.create({ baseURL: "https://smartchain-backend.timonchristiansen.com/" })
 Vue.prototype.$api = api
 var con = new DataController(api)
 
