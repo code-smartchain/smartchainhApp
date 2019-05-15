@@ -12,13 +12,10 @@ env:
     - ZONE=europe-west1-b	
     - IMAGE_NAME=webapp
 
-matrix:
-  include:
-      if: branch = staging
-      env: IMAGE_NAME=webapp-test
-
 stages:
   - test
+  - name: setEnvForStaging
+    if: branch = staging
   - name: deploy
     if: branch = master || branch = staging
 
@@ -33,6 +30,10 @@ jobs:
     - script: 
         - npm run lint
       name: "Linting"
+    - stage: "setEnvForStaging"
+      env:
+        global:
+          - IMAGE_NAME=webapp-test
     - stage: "deploy"
       install:
         - npm install
