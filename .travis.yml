@@ -33,7 +33,7 @@ jobs:
         - npm install
       name: "Deploy to Google Cloud Kubernetes"
       script: 
-        - if [[$TRAVIS_BRANCH == "staging"]]; then export IMAGE_NAME=webapp-test; fi
+        - if [ $TRAVIS_BRANCH = "staging" ]; then export IMAGE_NAME=webapp-test; fi
         - npm run build
       before_deploy:
         - if [ ! -d "$HOME/google-cloud-sdk/bin" ]; then rm -rf $HOME/google-cloud-sdk; export CLOUDSDK_CORE_DISABLE_PROMPTS=1; curl https://sdk.cloud.google.com | bash >/dev/null; fi
